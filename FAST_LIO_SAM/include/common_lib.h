@@ -5,11 +5,11 @@
 #include <Eigen/Eigen>
 #include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
-#include <fast_lio_sam/Pose6D.h>
-#include <sensor_msgs/Imu.h>
-#include <nav_msgs/Odometry.h>
-#include <tf/transform_broadcaster.h>
-#include <eigen_conversions/eigen_msg.h>
+#include <fast_lio_sam/msg/pose6_d.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <nav_msgs/msg/odometry.hpp>
+#include <tf2/utils.h>
+#include <tf2_eigen/tf2_eigen.hpp>
 
 using namespace std;
 using namespace Eigen;
@@ -33,7 +33,7 @@ using namespace Eigen;
 #define STD_VEC_FROM_EIGEN(mat)  vector<decltype(mat)::Scalar> (mat.data(), mat.data() + mat.rows() * mat.cols())
 #define DEBUG_FILE_DIR(name)     (string(string(ROOT_DIR) + "Log/"+ name))
 
-typedef fast_lio_sam::Pose6D Pose6D;
+typedef fast_lio_sam::msg::Pose6D Pose6D;
 typedef pcl::PointXYZINormal PointType;
 typedef pcl::PointCloud<PointType> PointCloudXYZI;
 typedef vector<PointType, Eigen::aligned_allocator<PointType>>  PointVector;
@@ -47,10 +47,10 @@ typedef Matrix3f M3F;
 #define MF(a,b)  Matrix<float, (a), (b)>
 #define VF(a)    Matrix<float, (a), 1>
 
-M3D Eye3d(M3D::Identity());
-M3F Eye3f(M3F::Identity());
-V3D Zero3d(0, 0, 0);
-V3F Zero3f(0, 0, 0);
+inline M3D Eye3d(M3D::Identity());
+inline M3F Eye3f(M3F::Identity());
+inline V3D Zero3d(0, 0, 0);
+inline V3F Zero3f(0, 0, 0);
 
 // 储存一帧lidar数据及imu数据序列
 struct MeasureGroup     // Lidar data and imu dates for the curent process
@@ -63,7 +63,7 @@ struct MeasureGroup     // Lidar data and imu dates for the curent process
     double lidar_beg_time; // lidar data begin time in the MeasureGroup
     double lidar_end_time; // lidar data end time in the MeasureGroup
     PointCloudXYZI::Ptr lidar;
-    deque<sensor_msgs::Imu::ConstPtr> imu;
+    deque<sensor_msgs::msg::Imu::SharedPtr> imu;
 };
 
 struct StatesGroup
@@ -218,7 +218,7 @@ bool esti_normvector(Matrix<T, 3, 1> &normvec, const PointVector &point, const T
     return true;
 }
 
-float calc_dist(PointType p1, PointType p2){
+inline float calc_dist(PointType p1, PointType p2){
     float d = (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y) + (p1.z - p2.z) * (p1.z - p2.z);
     return d;
 }

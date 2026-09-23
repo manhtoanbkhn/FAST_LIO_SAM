@@ -1,3 +1,6 @@
+#ifndef GNSS_PROCESSING_HPP
+#define GNSS_PROCESSING_HPP
+
 #include <cmath>
 #include <math.h>
 #include <deque>
@@ -5,7 +8,7 @@
 #include <thread>
 #include <fstream>
 #include <csignal>
-#include <ros/ros.h>
+#include <rclcpp/rclcpp.hpp>
 #include <so3_math.h>
 #include <Eigen/Eigen>
 #include <common_lib.h>
@@ -13,18 +16,18 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <condition_variable>
-#include <nav_msgs/Odometry.h>
+#include <nav_msgs/msg/odometry.hpp>
 #include <pcl/common/transforms.h>
 #include <pcl/kdtree/kdtree_flann.h>
-#include <tf/transform_broadcaster.h>
-#include <eigen_conversions/eigen_msg.h>
+#include <tf2/utils.h>
+#include <tf2_eigen/tf2_eigen.hpp>
 #include <pcl_conversions/pcl_conversions.h>
-#include <sensor_msgs/Imu.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <geometry_msgs/Vector3.h>
+#include <sensor_msgs/msg/imu.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <geometry_msgs/msg/vector3.hpp>
 #include "use-ikfom.hpp"
 
-#include <GeographicLib/LocalCartesian.hpp>                 //  调用GeographicLib库
+#include <GeographicLib/LocalCartesian.hpp>
 
 class GnssProcess
 {
@@ -87,17 +90,15 @@ GnssProcess::GnssProcess()
 
 GnssProcess::~GnssProcess() {}
 
-// 初始化原点， WGS84 -> ENU   ???  调试结果好像是 NED 北东地
 void GnssProcess::InitOriginPosition(double latitude, double longitude, double altitude)
 {
     geo_converter.Reset(latitude, longitude, altitude);
-    ROS_INFO("Init    Gnss  OriginPosition");   
+    RCLCPP_INFO(rclcpp::get_logger("GnssProcess"), "Init Gnss OriginPosition");   
     origin_latitude = latitude;
     origin_longitude = longitude;
     origin_altitude = altitude;
 }
 
-// 获取更新后的ENU坐标
 void GnssProcess::UpdateXYZ(double latitude, double longitude, double altitude) {
     geo_converter.Forward(latitude, longitude, altitude, local_E, local_N, local_U);
 }
@@ -127,4 +128,4 @@ void GnssProcess::set_extrinsic(const V3D &transl, const M3D &rot)
   Gnss_R_wrt_Lidar = rot;
 }
 
-
+#endif

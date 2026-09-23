@@ -1,7 +1,10 @@
-#include <ros/ros.h>
+#ifndef PREPROCESS_H
+#define PREPROCESS_H
+
+#include <rclcpp/rclcpp.hpp>
 #include <pcl_conversions/pcl_conversions.h>
-#include <sensor_msgs/PointCloud2.h>
-#include <livox_ros_driver/CustomMsg.h>
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <livox_ros_driver/msg/custom_msg.hpp>
 
 using namespace std;
 
@@ -11,18 +14,17 @@ typedef pcl::PointXYZINormal PointType;
 typedef pcl::PointCloud<PointType> PointCloudXYZI;
 
 enum LID_TYPE{AVIA = 1, VELO16, OUST64, RS128}; //{1, 2, 3, 4}
-enum Feature{Nor, Poss_Plane, Real_Plane, Edge_Jump, Edge_Plane, Wire, ZeroPoint};//未判断，可能平面，平面，跳跃边，平面交接边,细线
+enum Feature{Nor, Poss_Plane, Real_Plane, Edge_Jump, Edge_Plane, Wire, ZeroPoint};
 enum Surround{Prev, Next};
-enum E_jump{Nr_nor, Nr_zero, Nr_180, Nr_inf, Nr_blind}; // 未判断，接近0度，接近180度，接近远端，接近近端
+enum E_jump{Nr_nor, Nr_zero, Nr_180, Nr_inf, Nr_blind};
 
-//用于记录每个点的距离、角度、特征种类等属性
 struct orgtype
 {
-  double range; //平面距离
-  double dista; //与后一个点的间距平方
-  double angle[2]; // cos(当前点指向前一点或后一点的向量, ray)
-  double intersect;// // 当前点与相邻两点的夹角cos值
-  E_jump edj[2]; // 点前后两个方向的edge_jump类型
+  double range;
+  double dista;
+  double angle[2];
+  double intersect;
+  E_jump edj[2];
   Feature ftype;
   orgtype()
   {
@@ -83,13 +85,11 @@ namespace ouster_ros {
   };
 }  // namespace ouster_ros
 
-// clang-format off
 POINT_CLOUD_REGISTER_POINT_STRUCT(ouster_ros::Point,
     (float, x, x)
     (float, y, y)
     (float, z, z)
     (float, intensity, intensity)
-    // use std::uint32_t to avoid conflicting with pcl::uint32_t
     (std::uint32_t, t, t)
     (std::uint16_t, reflectivity, reflectivity)
     (std::uint8_t, ring, ring)
@@ -97,9 +97,6 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(ouster_ros::Point,
     (std::uint32_t, range, range)
 )
 
-/**
- * 6D位姿点云结构定义
-*/
 struct PointXYZIRPYT
 {
     PCL_ADD_POINT4D     
@@ -119,47 +116,42 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (PointXYZIRPYT,
 
 typedef PointXYZIRPYT  PointTypePose;
 
-
 class Preprocess
 {
   public:
-//   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
   Preprocess();
   ~Preprocess();
   
-  void process(const livox_ros_driver::CustomMsg::ConstPtr &msg, PointCloudXYZI::Ptr &pcl_out);
-  void process(const sensor_msgs::PointCloud2::ConstPtr &msg, PointCloudXYZI::Ptr &pcl_out);
+  void process(const livox_ros_driver::msg::CustomMsg::ConstSharedPtr &msg, PointCloudXYZI::Ptr &pcl_out);
+  void process(const sensor_msgs::msg::PointCloud2::ConstSharedPtr &msg, PointCloudXYZI::Ptr &pcl_out);
   void set(bool feat_en, int lid_type, double bld, int pfilt_num);
 
-  // sensor_msgs::PointCloud2::ConstPtr pointcloud;
-  PointCloudXYZI pl_full, pl_corn, pl_surf; //储存全部点(特征提取或间隔采样后）、角点、面特征点
-  PointCloudXYZI pl_buff[128]; //maximum 128 line lidar
-  vector<orgtype> typess[128]; //maximum 128 line lidar
+  PointCloudXYZI pl_full, pl_corn, pl_surf;
+  PointCloudXYZI pl_buff[128];
+  vector<orgtype> typess[128];
   int lidar_type, point_filter_num, N_SCANS, SCAN_RATE;
-  double blind; //xy平面距离，小于此阈值不计算特征
+  double blind;
   bool feature_enabled, given_offset_time;
-  ros::Publisher pub_full, pub_surf, pub_corn;
-    
 
   private:
-  void avia_handler(const livox_ros_driver::CustomMsg::ConstPtr &msg);
-  void oust64_handler(const sensor_msgs::PointCloud2::ConstPtr &msg);
-  void velodyne_handler(const sensor_msgs::PointCloud2::ConstPtr &msg);
-  void rs_handler(const sensor_msgs::PointCloud2::ConstPtr &msg);
-  void give_feature(PointCloudXYZI &pl, vector<orgtype> &types); // 当前扫描线点云， 扫描点属性
-  void pub_func(PointCloudXYZI &pl, const ros::Time &ct);
+  void avia_handler(const livox_ros_driver::msg::CustomMsg::ConstSharedPtr &msg);
+  void oust64_handler(const sensor_msgs::msg::PointCloud2::ConstSharedPtr &msg);
+  void velodyne_handler(const sensor_msgs::msg::PointCloud2::ConstSharedPtr &msg);
+  void rs_handler(const sensor_msgs::msg::PointCloud2::ConstSharedPtr &msg);
+  void give_feature(PointCloudXYZI &pl, vector<orgtype> &types);
   int  plane_judge(const PointCloudXYZI &pl, vector<orgtype> &types, uint i, uint &i_nex, Eigen::Vector3d &curr_direct);
   bool small_plane(const PointCloudXYZI &pl, vector<orgtype> &types, uint i_cur, uint &i_nex, Eigen::Vector3d &curr_direct);
   bool edge_jump_judge(const PointCloudXYZI &pl, vector<orgtype> &types, uint i, Surround nor_dir);
   
-  int group_size; //计算平面特征时需要的最少局部点数
-  double disA, disB, inf_bound; //
+  int group_size;
+  double disA, disB, inf_bound;
   double limit_maxmid, limit_midmin, limit_maxmin;
-  double p2l_ratio;//??
+  double p2l_ratio;
   double jump_up_limit, jump_down_limit;
   double cos160;
   double edgea, edgeb;
   double smallp_intersect, smallp_ratio;
   double vx, vy, vz;
 };
+
+#endif
