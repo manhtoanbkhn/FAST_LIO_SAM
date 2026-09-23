@@ -1,5 +1,5 @@
 Panels:
-  - Class: rviz/Displays
+  - Class: rviz_common/Displays
     Help Height: 0
     Name: Displays
     Property Tree Widget:
@@ -16,21 +16,21 @@ Panels:
         - /MarkerArray1/Namespaces1
       Splitter Ratio: 0.643229187
     Tree Height: 833
-  - Class: rviz/Selection
+  - Class: rviz_common/Selection
     Name: Selection
-  - Class: rviz/Tool Properties
+  - Class: rviz_common/Tool Properties
     Expanded:
       - /2D Pose Estimate1
       - /2D Nav Goal1
       - /Publish Point1
     Name: Tool Properties
     Splitter Ratio: 0.588679016
-  - Class: rviz/Views
+  - Class: rviz_common/Views
     Expanded:
       - /Current View1
     Name: Views
     Splitter Ratio: 0.5
-  - Class: rviz/Time
+  - Class: rviz_common/Time
     Experimental: false
     Name: Time
     SyncMode: 0
@@ -42,7 +42,7 @@ Visualization Manager:
   Displays:
     - Alpha: 1
       Cell Size: 1000
-      Class: rviz/Grid
+      Class: rviz_default_plugins/Grid
       Color: 160; 160; 164
       Enabled: false
       Line Style:
@@ -58,14 +58,14 @@ Visualization Manager:
       Plane Cell Count: 40
       Reference Frame: <Fixed Frame>
       Value: false
-    - Class: rviz/Axes
+    - Class: rviz_default_plugins/Axes
       Enabled: false
       Length: 0.699999988
       Name: Axes
       Radius: 0.0599999987
       Reference Frame: <Fixed Frame>
       Value: false
-    - Class: rviz/Group
+    - Class: rviz_common/Group
       Displays:
         - Alpha: 1
           Autocompute Intensity Bounds: true
@@ -75,7 +75,7 @@ Visualization Manager:
             Value: true
           Axis: Z
           Channel Name: intensity
-          Class: rviz/PointCloud2
+          Class: rviz_default_plugins/PointCloud2
           Color: 238; 238; 236
           Color Transformer: Intensity
           Decay Time: 0
@@ -92,8 +92,12 @@ Visualization Manager:
           Size (Pixels): 1
           Size (m): 0.0500000007
           Style: Points
-          Topic: /cloud_registered
-          Unreliable: false
+          Topic:
+            Depth: 10
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /cloud_registered
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
@@ -105,7 +109,7 @@ Visualization Manager:
             Value: false
           Axis: Z
           Channel Name: intensity
-          Class: rviz/PointCloud2
+          Class: rviz_default_plugins/PointCloud2
           Color: 255; 255; 255
           Color Transformer: Intensity
           Decay Time: 1000
@@ -122,8 +126,12 @@ Visualization Manager:
           Size (Pixels): 1
           Size (m): 0.00999999978
           Style: Points
-          Topic: /cloud_registered
-          Unreliable: false
+          Topic:
+            Depth: 10
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /cloud_registered
           Use Fixed Frame: true
           Use rainbow: true
           Value: true
@@ -135,7 +143,7 @@ Visualization Manager:
             Value: true
           Axis: Z
           Channel Name: intensity
-          Class: rviz/PointCloud2
+          Class: rviz_default_plugins/PointCloud2
           Color: 255; 0; 0
           Color Transformer: FlatColor
           Decay Time: 0
@@ -152,17 +160,21 @@ Visualization Manager:
           Size (Pixels): 3
           Size (m): 0.100000001
           Style: Flat Squares
-          Topic: /Laser_map
-          Unreliable: false
+          Topic:
+            Depth: 10
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /Laser_map
           Use Fixed Frame: true
           Use rainbow: true
           Value: false
       Enabled: true
       Name: mapping
-    - Class: rviz/Group
+    - Class: rviz_common/Group
       Displays:
         - Angle Tolerance: 0.00999999978
-          Class: rviz/Odometry
+          Class: rviz_default_plugins/Odometry
           Covariance:
             Orientation:
               Alpha: 0.5
@@ -192,12 +204,16 @@ Visualization Manager:
             Shaft Length: 0.0500000007
             Shaft Radius: 0.0500000007
             Value: Axes
-          Topic: /Odometry
-          Unreliable: false
+          Topic:
+            Depth: 10
+            Durability Policy: Volatile
+            History Policy: Keep Last
+            Reliability Policy: Reliable
+            Value: /Odometry
           Value: true
       Enabled: true
       Name: Odometry
-    - Class: rviz/Axes
+    - Class: rviz_default_plugins/Axes
       Enabled: true
       Length: 0.699999988
       Name: Axes
@@ -206,7 +222,7 @@ Visualization Manager:
       Value: true
     - Alpha: 0
       Buffer Length: 2
-      Class: rviz/Path
+      Class: rviz_default_plugins/Path
       Color: 25; 255; 255
       Enabled: true
       Head Diameter: 0
@@ -224,8 +240,12 @@ Visualization Manager:
       Radius: 0.0299999993
       Shaft Diameter: 0.400000006
       Shaft Length: 0.400000006
-      Topic: /path
-      Unreliable: false
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /path
       Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: false
@@ -235,7 +255,7 @@ Visualization Manager:
         Value: true
       Axis: Z
       Channel Name: intensity
-      Class: rviz/PointCloud2
+      Class: rviz_default_plugins/PointCloud2
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
@@ -252,8 +272,12 @@ Visualization Manager:
       Size (Pixels): 4
       Size (m): 0.300000012
       Style: Spheres
-      Topic: /cloud_effected
-      Unreliable: false
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /cloud_effected
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
@@ -265,7 +289,7 @@ Visualization Manager:
         Value: true
       Axis: Z
       Channel Name: intensity
-      Class: rviz/PointCloud2
+      Class: rviz_default_plugins/PointCloud2
       Color: 138; 226; 52
       Color Transformer: FlatColor
       Decay Time: 0
@@ -282,14 +306,23 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.100000001
       Style: Flat Squares
-      Topic: /Laser_map
-      Unreliable: false
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /Laser_map
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
-    - Class: rviz/MarkerArray
+    - Class: rviz_default_plugins/MarkerArray
       Enabled: false
-      Marker Topic: /MarkerArray
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /MarkerArray
       Name: MarkerArray
       Namespaces:
         {}
@@ -303,23 +336,38 @@ Visualization Manager:
     Frame Rate: 10
   Name: root
   Tools:
-    - Class: rviz/Interact
+    - Class: rviz_default_plugins/Interact
       Hide Inactive Objects: true
-    - Class: rviz/MoveCamera
-    - Class: rviz/Select
-    - Class: rviz/FocusCamera
-    - Class: rviz/Measure
-    - Class: rviz/SetInitialPose
-      Topic: /initialpose
-    - Class: rviz/SetGoal
-      Topic: /move_base_simple/goal
-    - Class: rviz/PublishPoint
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+    - Class: rviz_default_plugins/SetInitialPose
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /move_base_simple/goal
+    - Class: rviz_default_plugins/PublishPoint
       Single click: true
-      Topic: /clicked_point
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /clicked_point
   Value: true
   Views:
     Current:
-      Class: rviz/Orbit
+      Class: rviz_default_plugins/Orbit
       Distance: 33.204361
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
@@ -336,7 +384,7 @@ Visualization Manager:
       Name: Current View
       Near Clip Distance: 0.00999999978
       Pitch: 0.759796679
-      Target Frame: global
+      Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
       Yaw: 2.2772038
     Saved: ~

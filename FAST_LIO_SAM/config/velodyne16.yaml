@@ -31,7 +31,7 @@ laserMapping:
       fov_degree: 180
       det_range: 100.0
       extrinsic_est_en: true  # true: enable the online estimation of IMU-LiDAR extrinsic,
-      extrinsic_T: [0, 0, 0.28]
+      extrinsic_T: [0.0, 0.0, 0.28]
       extrinsic_R: [1, 0, 0, 0, 1, 0, 0, 0, 1]
 
     publish:
@@ -51,8 +51,8 @@ laserMapping:
     mappingSurfLeafSize: 0.4  # default: 0.4 - outdoor, 0.2 - indoor
 
     # robot motion constraint (in case you are using a 2D robot)
-    z_tollerance: 1000  # meters
-    rotation_tollerance: 1000  # radians
+    z_tollerance: 1000.0  # meters
+    rotation_tollerance: 1000.0  # radians
 
     # CPU Params
     numberOfCores: 4  # number of cores for mapping optimization
@@ -75,7 +75,7 @@ laserMapping:
 
     # Visualization
     globalMapVisualizationSearchRadius: 1000.0  # meters, global map visualization radius
-    globalMapVisualizationPoseDensity: 10  # meters, global map visualization keyframe density
+    globalMapVisualizationPoseDensity: 10.0  # meters, global map visualization keyframe density
     globalMapVisualizationLeafSize: 1.0  # meters, global map visualization cloud density
 
     # visual iktree_map
